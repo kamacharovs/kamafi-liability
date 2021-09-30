@@ -1,0 +1,84 @@
+name: release
+
+env:
+  configuration: release
+  project_file: kamafi.liability.core/kamafi.liability.core.csproj
+  project_test_file: kamafi.liability.tests/kamafi.liability.tests.csproj
+  output_path: app/publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Environment
+        required: true
+        default: dev
+
+jobs:
+  release:
+    environment: ${{ github.event.inputs.env }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: env
+      run: |
+        echo "running environment ${{ github.event.inputs.env }}"
+
+    - name: setup
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: dotnet nuget
+      run: dotnet nuget add source -u ${{ secrets.PACKAGE_USERNAME }} -p ${{ secrets.PACKAGE_TOKEN }} --store-password-in-clear-text -n github ${{ secrets.PACKAGE_URL }}
+
+    - name: restore
+      run: dotnet restore ${{ env.project_file }}
+      
+    - name: build
+      run: dotnet build -c ${{ env.configuration }} ${{env.project_file }} --no-restore
+
+    - name: test
+      run: dotnet test -c ${{ env.configuration }} ${{ env.project_test_file }} -l trx -v normal --no-build
+
+    - name: publish
+      run: dotnet publish -c ${{ env.configuration }} -o ${{ env.output_path }}
+
+    - name: docker buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: docker meta
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: gkama/kamafi-liability
+        tags: |
+          latest
+
+    - name: docker login
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: docker build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+
+    - name: az login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: az webapp restart
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az webapp restart -n ${{ secrets.AZURE_APP_NAME }} -g ${{ secrets.AZURE_APP_RESOURCE_GROUP }}
