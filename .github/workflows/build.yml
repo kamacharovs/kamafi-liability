@@ -1,0 +1,46 @@
+name: build
+
+env:
+  configuration: release
+  project_file: kamafi.liability.core/kamafi.liability.core.csproj
+  project_test_file: kamafi.liability.tests/kamafi.liability.tests.csproj
+  output_path: app/publish
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: setup
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: dotnet nuget
+      run: dotnet nuget add source -u ${{ secrets.PACKAGE_USERNAME }} -p ${{ secrets.PACKAGE_TOKEN }} --store-password-in-clear-text -n github ${{ secrets.PACKAGE_URL }}
+
+    - name: restore
+      run: dotnet restore ${{ env.project_file }}
+      
+    - name: build
+      run: dotnet build -c ${{ env.configuration }} ${{env.project_file }} --no-restore
+
+    - name: test
+      run: dotnet test -c ${{ env.configuration }} ${{ env.project_test_file }} -l trx -v normal --no-build
+
+    - name: publish
+      run: dotnet publish -c ${{ env.configuration }} -o ${{ env.output_path }}
+
+    - name: docker build
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        tags: gkama/kamafi-liability:latest
