@@ -33,6 +33,11 @@ namespace kamafi.liability.services
             return await base.GetAsync();
         }
 
+        public new async Task<ILiabilityType> AddAsync(LiabilityTypeDto dto)
+        {
+            return await base.AddAsync(dto);
+        }
+
         public new async Task<Liability> AddAsync(LiabilityDto dto)
         {
             dto.TypeName = LiabilityTypes.Base;

@@ -34,10 +34,9 @@ namespace kamafi.liability.core
         /// <summary>
         /// Get Liability types
         /// </summary>
-        //[Authorize(Roles = Roles.Admin)]
         [HttpGet]
         [Route("types")]
-        [ProducesResponseType(typeof(IEnumerable<ILiability>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ILiabilityType>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTypesAsync()
         {
             return Ok(await _repo.GetTypesAsync());
@@ -51,6 +50,19 @@ namespace kamafi.liability.core
         public async Task<IActionResult> GetAsync()
         {
             return Ok(await _repo.GetAsync());
+        }
+
+        /// <summary>
+        /// Add Liability type
+        /// </summary>
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPost]
+        [Route("types")]
+        [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ILiabilityType), StatusCodes.Status201Created)]
+        public async Task<IActionResult> AddAsync([FromBody, Required] LiabilityTypeDto dto)
+        {
+            return Created(nameof(LiabilityType), await _repo.AddAsync(dto));
         }
 
         /// <summary>
