@@ -112,6 +112,24 @@ namespace kamafi.liability.data
             };
         }
 
+        public IEnumerable<object[]> GetFakeLiabilityTypeData()
+        {
+            var fakeLiabilityTypes = GetFakeLiabilityTypes()
+                .Select(x => x.Name);
+
+            var toReturn = new List<object[]>();
+
+            foreach (var fakeLiabilityTypeString in  fakeLiabilityTypes)
+            {
+                toReturn.Add(new object[]
+                {
+                    fakeLiabilityTypeString
+                });
+            }
+
+            return toReturn;
+        }
+
         public IEnumerable<object[]> GetFakeLiabilityData(
             bool id = false,
             bool userId = false,

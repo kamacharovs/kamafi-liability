@@ -108,6 +108,11 @@ namespace kamafi.liability.tests
             => new ServiceHelper().GetRequiredService<FakeDataManager>() ?? throw new ArgumentNullException(nameof(FakeDataManager));
 
 
+        public static IEnumerable<object[]> LiabilityType()
+        {
+            return _Fake.GetFakeLiabilityTypeData();
+        }
+
         public static IEnumerable<object[]> LiabilityIdUserId()
         {
             return _Fake.GetFakeLiabilityData(
@@ -119,6 +124,13 @@ namespace kamafi.liability.tests
         {
             return _Fake.GetFakeLiabilityData(
                 userId: true);
+        }
+
+        public static LiabilityTypeDto RandomLiabilityTypeDto()
+        {
+            return new Faker<LiabilityTypeDto>()
+                .RuleFor(x => x.Name, f => f.Random.String2(10))
+                .Generate();
         }
         #endregion
     }

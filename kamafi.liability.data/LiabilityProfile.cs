@@ -2,6 +2,8 @@ using System;
 
 using AutoMapper;
 
+using kamafi.core.data;
+
 namespace kamafi.liability.data
 {
     public class LiabilityProfile : Profile
@@ -12,7 +14,11 @@ namespace kamafi.liability.data
              * Liability type
              */
             CreateMap<LiabilityTypeDto, LiabilityType>()
-                .ForMember(x => x.Name, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.Name)));
+                .ForMember(x => x.Name, o =>
+                {
+                    o.PreCondition(s => !string.IsNullOrWhiteSpace(s.Name));
+                    o.MapFrom(s => s.Name.ToSnakeCase().ToLowerInvariant());
+                });
 
             /*
              * Liability
