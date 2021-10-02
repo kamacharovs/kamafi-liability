@@ -57,6 +57,12 @@ namespace kamafi.liability.services
                 : query;
         }
 
+        public async Task<IEnumerable<ILiabilityType>> GetTypesAsync()
+        {
+            return await GetTypesQuery()
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAsync()
         {
             return await GetQuery()

@@ -23,7 +23,12 @@ namespace kamafi.liability.services
             : base(logger, validator, mapper, context)
         { }
 
-        public new async Task<IEnumerable<Liability>> GetAsync()
+        public new async Task<IEnumerable<ILiabilityType>> GetTypesAsync()
+        {
+            return await base.GetTypesAsync();
+        }
+
+        public new async Task<IEnumerable<ILiability>> GetAsync()
         {
             return await base.GetAsync();
         }

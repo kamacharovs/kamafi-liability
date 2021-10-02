@@ -59,6 +59,11 @@ namespace kamafi.liability.data
         }
     }
 
+    public static class Roles
+    {
+        public const string Admin = nameof(Admin);
+    }
+
     public static class LiabilityTypes
     {
         public const string Base = "base";

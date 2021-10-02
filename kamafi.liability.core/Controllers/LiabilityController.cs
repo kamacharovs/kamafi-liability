@@ -32,6 +32,18 @@ namespace kamafi.liability.core
         }
 
         /// <summary>
+        /// Get Liability types
+        /// </summary>
+        //[Authorize(Roles = Roles.Admin)]
+        [HttpGet]
+        [Route("types")]
+        [ProducesResponseType(typeof(IEnumerable<ILiability>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetTypesAsync()
+        {
+            return Ok(await _repo.GetTypesAsync());
+        }
+
+        /// <summary>
         /// Get Liabilities
         /// </summary>
         [HttpGet]
