@@ -152,6 +152,17 @@ namespace kamafi.liability.data
                 isDeleted: isDeleted);
         }
 
+        public IEnumerable<object[]> GetFakeLoanData(
+            bool id = false,
+            bool userId = false,
+            bool isDeleted = false)
+        {
+            return GetFakeLiabilityData<Loan>(
+                id: id,
+                userId: userId,
+                isDeleted: isDeleted);
+        }
+
         private IEnumerable<object[]> GetFakeLiabilityData<T>(
             bool id = false,
             bool userId = false,
