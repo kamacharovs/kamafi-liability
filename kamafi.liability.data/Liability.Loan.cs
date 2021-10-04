@@ -7,6 +7,8 @@ namespace kamafi.liability.data
     {
         public string LoanType { get; set; }
         public decimal Interest { get; set; }
+        public bool? ShortTerm { get; set; }
+        public bool? LongTerm { get; set; }
     }
 
     public class LoanDto : LiabilityDto

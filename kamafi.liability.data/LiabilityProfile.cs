@@ -47,7 +47,17 @@ namespace kamafi.liability.data
                 .ForMember(x => x.TypeName, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.TypeName)))
                 .ForMember(x => x.Value, o => o.Condition(s => s.Value.HasValue))
                 .ForMember(x => x.LoanType, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.LoanType)))
-                .ForMember(x => x.Interest, o => o.Condition(s => s.Interest.HasValue));
+                .ForMember(x => x.Interest, o => o.Condition(s => s.Interest.HasValue))
+                .ForMember(x => x.ShortTerm, o =>
+                {
+                    o.PreCondition(s => s.Years.HasValue);
+                    o.MapFrom(s => s.Years < 15);
+                })
+                .ForMember(x => x.LongTerm, o =>
+                {
+                    o.PreCondition(s => s.Years.HasValue);
+                    o.MapFrom(s => s.Years >= 15);
+                });
         }
     }
 }
