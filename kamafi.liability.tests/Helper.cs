@@ -167,13 +167,16 @@ namespace kamafi.liability.tests
         public static VehicleDto RandomVehicleDto()
         {
             return FakerLiabilityDto<VehicleDto>()
+                .RuleFor(x => x.TypeName, f => null)
                 .RuleFor(x => x.DownPayment, f => f.Random.Decimal(1000, 4000))
+                .RuleFor(x => x.Interest, f => f.Random.Decimal(0.01M, 10))
                 .Generate();
         }
 
         public static LoanDto RandomLoanDto()
         {
             return FakerLiabilityDto<LoanDto>()
+                .RuleFor(x => x.TypeName, f => null)
                 .RuleFor(x => x.LoanType, f => f.Random.String2(5, 10))
                 .RuleFor(x => x.Interest, f => f.Random.Decimal(0.01M, 1.5M))
                 .Generate();

@@ -87,7 +87,8 @@ namespace kamafi.liability.data
                     Years = 5,
                     UserId = 1,
                     IsDeleted = false,
-                    DownPayment = 489.15M
+                    DownPayment = 489.15M,
+                    Interest = 6.75M
                 }
             };
         }

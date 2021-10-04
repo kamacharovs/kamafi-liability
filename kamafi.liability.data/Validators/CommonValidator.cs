@@ -18,6 +18,16 @@ namespace kamafi.liability.data.validators
         public static string TypeNameMessage = "Unsupported TypeName";
         public static string LiabilityUpdateMessage = $"You must specify at least one field to update. '{nameof(LiabilityDto.Name)}', '{nameof(LiabilityDto.TypeName)}' or '{nameof(LiabilityDto.Value)}'";
 
+        public static string GenerateValueMessage(string field)
+        {
+            return $"{field}. Value must be between {MinimumValue} and {MaximumValue}";
+        }
+
+        public static string GeneratePercentValueMessage(string field)
+        {
+            return $"{field}. Percent must be between {MinimumPercentValue} and {MaximumPercentValue}";
+        }
+
         public static bool BeValidValue(decimal? value)
         {
             return value.HasValue
@@ -27,10 +37,8 @@ namespace kamafi.liability.data.validators
 
         public static bool BeValidPercent(decimal? value)
         {
-            var valuePerc = Math.Round((decimal)(value * 100), 4);
-
             return value.HasValue
-                ? valuePerc > 0 && valuePerc <= 100
+                ? (decimal)value > 0 && (decimal)value <= 100
                 : false;
         }
     }

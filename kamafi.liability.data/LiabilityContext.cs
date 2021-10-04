@@ -66,6 +66,7 @@ namespace kamafi.liability.data
                 e.ToTable(Keys.Entity.Vehicle);
 
                 e.Property(x => x.DownPayment).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.Interest).HasSnakeCaseColumnName().IsRequired();
             });
 
             modelBuilder.Entity<Loan>(e =>

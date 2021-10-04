@@ -22,8 +22,11 @@ namespace kamafi.liability.data.validators
         {
             RuleFor(x => x.DownPayment)
                 .Must(CommonValidator.BeValidValue)
-                .WithMessage(CommonValidator.ValueMessage)
-                .When(x => x.DownPayment.HasValue);
+                .WithMessage(CommonValidator.GenerateValueMessage(nameof(VehicleDto.DownPayment)));
+
+            RuleFor(x => x.Interest)
+                .Must(CommonValidator.BeValidPercent)
+                .WithMessage(CommonValidator.GeneratePercentValueMessage(nameof(VehicleDto.Interest)));
         }
 
         public void SetUpdateRules()
@@ -32,6 +35,11 @@ namespace kamafi.liability.data.validators
                 .Must(CommonValidator.BeValidValue)
                 .WithMessage(CommonValidator.ValueMessage)
                 .When(x => x.DownPayment.HasValue);
+
+            RuleFor(x => x.Interest)
+                .Must(CommonValidator.BeValidPercent)
+                .WithMessage(CommonValidator.PercentValueMessage)
+                .When(x => x.Interest.HasValue);
         }
     }
 }

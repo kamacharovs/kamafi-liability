@@ -32,6 +32,7 @@ namespace kamafi.liability.tests
             Assert.Equal(userId, liability.UserId);
             Assert.False(liability.IsDeleted);
             Assert.True(liability.DownPayment > 0);
+            Assert.True(liability.Interest > 0);
         }
 
         [Theory]
@@ -67,6 +68,9 @@ namespace kamafi.liability.tests
             Assert.Equal(userId, liability.UserId);
             Assert.False(liability.IsDeleted);
             Assert.True(liability.DownPayment > 0);
+            Assert.True(liability.Interest > 0);
+            Assert.Equal(dto.DownPayment, liability.DownPayment);
+            Assert.Equal(dto.Interest, liability.Interest);
         }
     }
 }
