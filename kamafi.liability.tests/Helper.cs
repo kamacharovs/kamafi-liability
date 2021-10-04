@@ -126,6 +126,19 @@ namespace kamafi.liability.tests
                 userId: true);
         }
 
+        public static IEnumerable<object[]> VehicleIdUserId()
+        {
+            return _Fake.GetFakeVehicleData(
+                id: true,
+                userId: true);
+        }
+
+        public static IEnumerable<object[]> VehicleUserId()
+        {
+            return _Fake.GetFakeVehicleData(
+                userId: true);
+        }
+
         public static LiabilityTypeDto RandomLiabilityTypeDto()
         {
             return new Faker<LiabilityTypeDto>()
@@ -135,12 +148,20 @@ namespace kamafi.liability.tests
 
         public static LiabilityDto RandomLiabilityDto()
         {
-            return FakerLiabilityDto().Generate();
+            return FakerLiabilityDto<LiabilityDto>().Generate();
         }
 
-        private static Faker<LiabilityDto> FakerLiabilityDto()
+        public static VehicleDto RandomVehicleDto()
         {
-            return new Faker<LiabilityDto>()
+            return FakerLiabilityDto<VehicleDto>()
+                .RuleFor(x => x.DownPayment, f => f.Random.Decimal(1000, 4000))
+                .Generate();
+        }
+
+        private static Faker<TDto> FakerLiabilityDto<TDto>()
+            where TDto : LiabilityDto
+        {
+            return new Faker<TDto>()
                 .RuleFor(x => x.Name, f => f.Random.String2(10))
                 .RuleFor(x => x.TypeName, f => LiabilityTypes.Base)
                 .RuleFor(x => x.Value, f => f.Random.Int(1000, 10000))

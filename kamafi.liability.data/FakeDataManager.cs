@@ -135,7 +135,30 @@ namespace kamafi.liability.data
             bool userId = false,
             bool isDeleted = false)
         {
-            var fakeLiabilities = _context.Liabilities
+            return GetFakeLiabilityData<Liability>(
+                id: id,
+                userId: userId,
+                isDeleted: isDeleted);
+        }
+
+        public IEnumerable<object[]> GetFakeVehicleData(
+            bool id = false,
+            bool userId = false,
+            bool isDeleted = false)
+        {
+            return GetFakeLiabilityData<Vehicle>(
+                id: id,
+                userId: userId,
+                isDeleted: isDeleted);
+        }
+
+        private IEnumerable<object[]> GetFakeLiabilityData<T>(
+            bool id = false,
+            bool userId = false,
+            bool isDeleted = false)
+            where T : Liability
+        {
+            var fakeLiabilities = _context.Set<T>()
                 .Where(x => x.IsDeleted == isDeleted)
                 .ToArray();
 
