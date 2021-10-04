@@ -24,6 +24,8 @@ namespace kamafi.liability.data
              * Liability
              */
             CreateMap<LiabilityDto, Liability>()
+                .Include<VehicleDto, Vehicle>()
+                .Include<LoanDto, Loan>()
                 .ForMember(x => x.Name, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.Name)))
                 .ForMember(x => x.TypeName, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.TypeName)))
                 .ForMember(x => x.Value, o => o.Condition(s => s.Value.HasValue))
@@ -34,11 +36,6 @@ namespace kamafi.liability.data
              * Vehicle
              */
             CreateMap<VehicleDto, Vehicle>()
-                .ForMember(x => x.Name, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.Name)))
-                .ForMember(x => x.TypeName, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.TypeName)))
-                .ForMember(x => x.Value, o => o.Condition(s => s.Value.HasValue))
-                .ForMember(x => x.MonthlyPayment, o => o.Condition(s => s.MonthlyPayment.HasValue))
-                .ForMember(x => x.Years, o => o.Condition(s => s.Years.HasValue))
                 .ForMember(x => x.DownPayment, o => o.Condition(s => s.DownPayment.HasValue))
                 .ForMember(x => x.Interest, o => o.Condition(s => s.Interest.HasValue));
 
@@ -46,11 +43,6 @@ namespace kamafi.liability.data
              * Loan
              */
             CreateMap<LoanDto, Loan>()
-                .ForMember(x => x.Name, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.Name)))
-                .ForMember(x => x.TypeName, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.TypeName)))
-                .ForMember(x => x.Value, o => o.Condition(s => s.Value.HasValue))
-                .ForMember(x => x.MonthlyPayment, o => o.Condition(s => s.MonthlyPayment.HasValue))
-                .ForMember(x => x.Years, o => o.Condition(s => s.Years.HasValue))
                 .ForMember(x => x.LoanType, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.LoanType)))
                 .ForMember(x => x.Interest, o => o.Condition(s => s.Interest.HasValue))
                 .ForMember(x => x.ShortTerm, o =>
