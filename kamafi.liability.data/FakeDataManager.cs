@@ -114,7 +114,7 @@ namespace kamafi.liability.data
 
         public IEnumerable<object[]> GetFakeLiabilityTypeData()
         {
-            var fakeLiabilityTypes = GetFakeLiabilityTypes()
+            var fakeLiabilityTypes = _context.LiabilityTypes
                 .Select(x => x.Name);
 
             var toReturn = new List<object[]>();
@@ -135,7 +135,7 @@ namespace kamafi.liability.data
             bool userId = false,
             bool isDeleted = false)
         {
-            var fakeLiabilities = GetFakeLiabilities()
+            var fakeLiabilities = _context.Liabilities
                 .Where(x => x.IsDeleted == isDeleted)
                 .ToArray();
 
@@ -155,7 +155,7 @@ namespace kamafi.liability.data
             }
             else if (userId)
             {
-                foreach (var fakeLiabilityId in fakeLiabilities.Select(x => x.Id).Distinct())
+                foreach (var fakeLiabilityId in fakeLiabilities.Select(x => x.UserId).Distinct())
                 {
                     toReturn.Add(new object[]
                     {

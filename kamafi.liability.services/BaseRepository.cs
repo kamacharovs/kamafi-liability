@@ -124,6 +124,10 @@ namespace kamafi.liability.services
             int id,
             TDto dto)
         {
+            var validatorResult = await _validator.ValidateAsync(dto, o => o.IncludeRuleSets(Constants.UpdateRuleSetMap[typeof(TDto).Name]));
+
+            if (!validatorResult.IsValid) throw new ValidationException(validatorResult.Errors);
+
             var liability = await GetAsync(id, false);
 
             liability = _mapper.Map(dto, liability);
