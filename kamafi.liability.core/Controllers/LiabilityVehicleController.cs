@@ -39,5 +39,19 @@ namespace kamafi.liability.core
         {
             return Created(nameof(Vehicle), await _repo.AddAsync(dto));
         }
+
+        /// <summary>
+        /// Update Liability.Vehicle
+        /// </summary>
+        [HttpPut]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ILiability), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateAsync(
+            [FromRoute, Required] int id,
+            [FromBody, Required] VehicleDto dto)
+        {
+            return Ok(await _repo.UpdateAsync(id, dto));
+        }
     }
 }

@@ -28,5 +28,10 @@ namespace kamafi.liability.services
 
             return await base.AddAsync(dto);
         }
+
+        public new async Task<Vehicle> UpdateAsync(int id, VehicleDto dto)
+        {
+            return await base.UpdateAsync(id, dto);
+        }
     }
 }
