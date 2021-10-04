@@ -63,15 +63,15 @@ namespace kamafi.liability.services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAsync()
+        public async Task<IEnumerable<T>> GetAsync(bool asNoTracking = true)
         {
-            return await GetQuery()
+            return await GetQuery(asNoTracking)
                 .ToListAsync();
         }
 
-        public async Task<T> GetAsync(int id)
+        public async Task<T> GetAsync(int id, bool asNoTracking = true)
         {
-            return await GetQuery()
+            return await GetQuery(asNoTracking)
                 .FirstOrDefaultAsync(x => x.Id == id)
                 ?? throw new core.data.KamafiNotFoundException($"Liability with Id={id} was not found");
         }
@@ -124,7 +124,7 @@ namespace kamafi.liability.services
             int id,
             TDto dto)
         {
-            var liability = await GetAsync(id);
+            var liability = await GetAsync(id, false);
 
             liability = _mapper.Map(dto, liability);
 

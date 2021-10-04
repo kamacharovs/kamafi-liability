@@ -80,5 +80,53 @@ namespace kamafi.liability.tests
             Assert.Equal(400, exception.StatusCode);
             Assert.Contains("already exists", exception.Message, StringComparison.InvariantCultureIgnoreCase);
         }
+
+        [Theory]
+        [MemberData(nameof(Helper.LiabilityUserId), MemberType = typeof(Helper))]
+        public async Task AddAsync_IsSuccessful(int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+            var dto = Helper.RandomLiabilityDto();
+
+            var liability = await repo.AddAsync(dto);
+
+            Assert.NotNull(liability);
+            Assert.NotNull(liability.Name);
+            Assert.NotNull(liability.Type);
+            Assert.NotNull(liability.TypeName);
+            Assert.True(liability.Value > 0);
+            Assert.True(liability.MonthlyPayment > 0);
+            Assert.True(liability.Years > 0);
+            Assert.Equal(userId, liability.UserId);
+            Assert.False(liability.IsDeleted);
+        }
+
+        [Theory]
+        [MemberData(nameof(Helper.LiabilityIdUserId), MemberType = typeof(Helper))]
+        public async Task UpdateAsync_IsSuccessful(int id, int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+            var dto = Helper.RandomLiabilityDto();
+
+            var liabilityInDb = (await repo.GetAsync())
+                .FirstOrDefault(x => x.Id == id);
+
+            Assert.NotNull(liabilityInDb);
+
+            var liability = await repo.UpdateAsync(liabilityInDb.Id, dto);
+
+            Assert.NotNull(liability);
+            Assert.NotNull(liability.Name);
+            Assert.NotNull(liability.Type);
+            Assert.NotNull(liability.TypeName);
+            Assert.True(liability.Value > 0);
+            Assert.True(liability.MonthlyPayment > 0);
+            Assert.True(liability.Years > 0);
+            Assert.Equal(userId, liability.UserId);
+            Assert.False(liability.IsDeleted);
+            Assert.NotEqual(liabilityInDb.Value, liability.Value);
+            Assert.NotEqual(liabilityInDb.Name, liability.Name);
+            Assert.NotEqual(liabilityInDb.MonthlyPayment, liability.MonthlyPayment);
+        }
     }
 }

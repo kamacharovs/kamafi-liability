@@ -132,6 +132,21 @@ namespace kamafi.liability.tests
                 .RuleFor(x => x.Name, f => f.Random.String2(10))
                 .Generate();
         }
+
+        public static LiabilityDto RandomLiabilityDto()
+        {
+            return FakerLiabilityDto().Generate();
+        }
+
+        private static Faker<LiabilityDto> FakerLiabilityDto()
+        {
+            return new Faker<LiabilityDto>()
+                .RuleFor(x => x.Name, f => f.Random.String2(10))
+                .RuleFor(x => x.TypeName, f => LiabilityTypes.Base)
+                .RuleFor(x => x.Value, f => f.Random.Int(1000, 10000))
+                .RuleFor(x => x.MonthlyPayment, f => f.Random.Decimal(50, 500))
+                .RuleFor(x => x.Years, f => f.Random.Int(1, 5));
+        }
         #endregion
     }
 }
