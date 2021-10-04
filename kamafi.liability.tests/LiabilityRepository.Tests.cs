@@ -129,6 +129,20 @@ namespace kamafi.liability.tests
         }
 
         [Theory]
+        [MemberData(nameof(Helper.LiabilityUserId), MemberType = typeof(Helper))]
+        public async Task AddAsync_ValidationError_ThrowsValidationException(int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+            var dto = Helper.RandomLiabilityDto();
+
+            dto.Name = null;
+            dto.TypeName = null;
+            dto.Value = -1;
+
+            await Assert.ThrowsAsync<ValidationException>(() => repo.AddAsync(dto));
+        }
+
+        [Theory]
         [MemberData(nameof(Helper.LiabilityIdUserId), MemberType = typeof(Helper))]
         public async Task UpdateAsync_IsSuccessful(int id, int userId)
         {
@@ -154,6 +168,16 @@ namespace kamafi.liability.tests
             Assert.NotEqual(liabilityInDb.Value, liability.Value);
             Assert.NotEqual(liabilityInDb.Name, liability.Name);
             Assert.NotEqual(liabilityInDb.MonthlyPayment, liability.MonthlyPayment);
+        }
+
+        [Theory]
+        [MemberData(nameof(Helper.LiabilityIdUserId), MemberType = typeof(Helper))]
+        public async Task UpdateAsync_ValidationError_ThrowsValidationException(int id, int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+            var dto = new LiabilityDto();
+
+            await Assert.ThrowsAsync<ValidationException>(() => repo.UpdateAsync(id, dto));
         }
 
         [Theory]
