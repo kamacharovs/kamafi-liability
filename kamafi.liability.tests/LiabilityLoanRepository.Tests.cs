@@ -33,6 +33,8 @@ namespace kamafi.liability.tests
             Assert.False(liability.IsDeleted);
             Assert.NotNull(liability.LoanType);
             Assert.True(liability.Interest > 0);
+            Assert.Equal(dto.LoanType, liability.LoanType);
+            Assert.Equal(dto.Interest, liability.Interest);
         }
 
         [Theory]
@@ -69,6 +71,8 @@ namespace kamafi.liability.tests
             Assert.False(liability.IsDeleted);
             Assert.NotNull(liability.LoanType);
             Assert.True(liability.Interest > 0);
+            Assert.Equal(dto.LoanType, liability.LoanType);
+            Assert.Equal(dto.Interest, liability.Interest);
         }
     }
 }
