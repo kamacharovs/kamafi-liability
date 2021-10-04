@@ -155,11 +155,11 @@ namespace kamafi.liability.data
             }
             else if (userId)
             {
-                foreach (var fakeLiability in fakeLiabilities)
+                foreach (var fakeLiabilityId in fakeLiabilities.Select(x => x.Id).Distinct())
                 {
                     toReturn.Add(new object[]
                     {
-                        fakeLiability.UserId
+                        fakeLiabilityId
                     });
                 }
             }

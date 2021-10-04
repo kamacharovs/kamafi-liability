@@ -54,6 +54,33 @@ namespace kamafi.liability.tests
         }
 
         [Theory]
+        [MemberData(nameof(Helper.LiabilityIdUserId), MemberType = typeof(Helper))]
+        public async Task GetAsync_ById_IsSuccessful(int id, int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+            var liability = await repo.GetAsync(id);
+
+            Assert.NotNull(liability);
+            Assert.NotNull(liability.Name);
+            Assert.NotNull(liability.Type);
+            Assert.NotNull(liability.TypeName);
+            Assert.True(liability.Value > 0);
+            Assert.True(liability.MonthlyPayment > 0);
+            Assert.True(liability.Years > 0);
+            Assert.Equal(userId, liability.UserId);
+            Assert.False(liability.IsDeleted);
+        }
+
+        [Theory]
+        [MemberData(nameof(Helper.LiabilityIdUserId), MemberType = typeof(Helper))]
+        public async Task GetAsync_ById_NotFound_ThrowsNotFound(int id, int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+
+            await Assert.ThrowsAsync<core.data.KamafiNotFoundException>(() => repo.GetAsync(id * 1000));
+        }
+
+        [Theory]
         [MemberData(nameof(Helper.LiabilityUserId), MemberType = typeof(Helper))]
         public async Task AddAsync_Type_IsSuccessful(int userId)
         {
@@ -127,6 +154,26 @@ namespace kamafi.liability.tests
             Assert.NotEqual(liabilityInDb.Value, liability.Value);
             Assert.NotEqual(liabilityInDb.Name, liability.Name);
             Assert.NotEqual(liabilityInDb.MonthlyPayment, liability.MonthlyPayment);
+        }
+
+        [Theory]
+        [MemberData(nameof(Helper.LiabilityIdUserId), MemberType = typeof(Helper))]
+        public async Task DeleteAsync_IsSuccessfuL(int id, int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+
+            await repo.DeleteAsync(id);
+
+            await Assert.ThrowsAsync<core.data.KamafiNotFoundException>(() => repo.GetAsync(id));
+        }
+
+        [Theory]
+        [MemberData(nameof(Helper.LiabilityIdUserId), MemberType = typeof(Helper))]
+        public async Task DeleteAsync_NotFound_ThrowsNotFound(int id, int userId)
+        {
+            var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
+
+            await Assert.ThrowsAsync<core.data.KamafiNotFoundException>(() => repo.DeleteAsync(id * 1000));
         }
     }
 }

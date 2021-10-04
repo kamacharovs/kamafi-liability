@@ -28,9 +28,14 @@ namespace kamafi.liability.services
             return await base.GetTypesAsync();
         }
 
-        public new async Task<IEnumerable<ILiability>> GetAsync()
+        public async Task<IEnumerable<ILiability>> GetAsync()
         {
             return await base.GetAsync();
+        }
+
+        public async Task<ILiability> GetAsync(int id)
+        {
+            return await base.GetAsync(id);
         }
 
         public new async Task<ILiabilityType> AddAsync(LiabilityTypeDto dto)
