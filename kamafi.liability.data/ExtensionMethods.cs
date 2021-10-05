@@ -11,7 +11,7 @@ namespace kamafi.liability.data
     {
         public static Loan EstimateMonthlyPayment(this Loan loan)
         {
-            loan.EsimatedMonthlyPayment = EstimateMonthlyPayment(
+            loan.EsimatedMonthlyPayment = CalculatePayment(
                 loan.Years,
                 (double)loan.Value,
                 (double)loan.Interest);
@@ -19,7 +19,7 @@ namespace kamafi.liability.data
             return loan;
         }
 
-        public static decimal EstimateMonthlyPayment(
+        public static decimal CalculatePayment(
             int? years,
             double value,
             double interest)

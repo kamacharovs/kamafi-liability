@@ -25,7 +25,7 @@ namespace kamafi.liability.services.handlers
                 || dto.Value.HasValue && dto.Value != liability.Value
                 || dto.Interest.HasValue && dto.Interest != liability.Interest)
             {
-                liability.EsimatedMonthlyPayment = ExtensionMethods.EstimateMonthlyPayment(
+                liability.EsimatedMonthlyPayment = ExtensionMethods.CalculatePayment(
                     dto.Years.HasValue ? dto.Years : liability.Years,
                     dto.Value.HasValue ? (double)dto.Value : (double)liability.Value,
                     dto.Interest.HasValue ? (double)dto.Interest : (double)liability.Interest);
