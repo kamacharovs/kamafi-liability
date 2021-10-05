@@ -75,6 +75,7 @@ namespace kamafi.liability.data
 
                 e.Property(x => x.LoanType).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
                 e.Property(x => x.Interest).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.EsimatedMonthlyPayment).HasSnakeCaseColumnName().IsRequired();
                 e.Property(x => x.ShortTerm).HasSnakeCaseColumnName();
                 e.Property(x => x.LongTerm).HasSnakeCaseColumnName();
             });
