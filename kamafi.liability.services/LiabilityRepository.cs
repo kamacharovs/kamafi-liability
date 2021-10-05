@@ -8,6 +8,7 @@ using AutoMapper;
 using FluentValidation;
 
 using kamafi.liability.data;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.services
 {
@@ -19,8 +20,9 @@ namespace kamafi.liability.services
             ILogger<LiabilityRepository> logger,
             IValidator<LiabilityDto> validator,
             IMapper mapper,
+            IAbstractHandler<Liability, LiabilityDto> handler,
             LiabilityContext context)
-            : base(logger, validator, mapper, context)
+            : base(logger, validator, mapper, handler, context)
         { }
 
         public new async Task<IEnumerable<ILiabilityType>> GetTypesAsync()

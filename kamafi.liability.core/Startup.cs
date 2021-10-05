@@ -14,6 +14,7 @@ using kamafi.core.middleware;
 using kamafi.liability.data;
 using kamafi.liability.data.validators;
 using kamafi.liability.services;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.core
 {
@@ -41,6 +42,10 @@ namespace kamafi.liability.core
             services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
                 .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>()
                 .AddSingleton<IValidator<LoanDto>, LoanDtoValidator>();
+
+            services.AddSingleton<IAbstractHandler<Liability, LiabilityDto>, LiabilityHandler>()
+                .AddSingleton<IAbstractHandler<Loan, LoanDto>, LoanHandler>()
+                .AddSingleton<IAbstractHandler<Vehicle, VehicleDto>, VehicleHandler>();
 
             services.AddKamafiServices<LiabilityContext>(
                 new kamafi.core.data.KamafiConfiguration

@@ -21,6 +21,7 @@ using kamafi.core.data;
 using kamafi.liability.data;
 using kamafi.liability.data.validators;
 using kamafi.liability.services;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.tests
 {
@@ -53,6 +54,10 @@ namespace kamafi.liability.tests
             services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
                 .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>()
                 .AddSingleton<IValidator<LoanDto>, LoanDtoValidator>();
+
+            services.AddSingleton<IAbstractHandler<Liability, LiabilityDto>, LiabilityHandler>()
+                .AddSingleton<IAbstractHandler<Loan, LoanDto>, LoanHandler>()
+                .AddSingleton<IAbstractHandler<Vehicle, VehicleDto>, VehicleHandler>();
 
             services.AddScoped(x => GetMockTenant());
             services.AddSingleton(new MapperConfiguration(x =>

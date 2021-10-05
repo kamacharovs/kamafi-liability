@@ -8,6 +8,7 @@ using AutoMapper;
 using FluentValidation;
 
 using kamafi.liability.data;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.services
 {
@@ -21,9 +22,10 @@ namespace kamafi.liability.services
         public LoanRepository(
             ILogger<LoanRepository> logger,
             IValidator<LoanDto> validator,
-            IMapper mapper,        
+            IMapper mapper,
+            IAbstractHandler<Loan, LoanDto> handler,
             LiabilityContext context)
-            : base(logger, validator, mapper, context)
+            : base(logger, validator, mapper, handler, context)
         {
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -31,18 +33,7 @@ namespace kamafi.liability.services
 
         public new async Task<Loan> AddAsync(LoanDto dto)
         {
-            dto.TypeName = LiabilityTypes.Loan;
-
-            var validatorResult = await _validator.ValidateAsync(dto, 
-                o => o.IncludeRuleSets(Constants.AddLoanRuleSet));
-
-            if (!validatorResult.IsValid) 
-                throw new ValidationException(validatorResult.Errors);
-
-            var loan = _mapper.Map<Loan>(dto);
-            loan.EstimateMonthlyPayment();
-
-            return await base.AddAsync(loan);
+            return await base.AddAsync(dto);
         }
 
         public new async Task<Loan> UpdateAsync(int id, LoanDto dto)

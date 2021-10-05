@@ -12,6 +12,7 @@ using AutoMapper;
 using FluentValidation;
 
 using kamafi.liability.data;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.services
 {
@@ -22,17 +23,20 @@ namespace kamafi.liability.services
         private readonly ILogger<BaseRepository<T, TDto>> _logger;
         private readonly IValidator<TDto> _validator;
         private readonly IMapper _mapper;
+        private readonly IAbstractHandler<T, TDto> _handler;
         private readonly LiabilityContext _context;
 
         public BaseRepository(
             ILogger<BaseRepository<T, TDto>> logger,
             IValidator<TDto> validator,
             IMapper mapper,
+            IAbstractHandler<T, TDto> handler,
             LiabilityContext context)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _validator = validator ?? throw new ArgumentNullException(nameof(validator));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _handler = handler ?? throw new ArgumentNullException(nameof(handler));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
@@ -99,19 +103,15 @@ namespace kamafi.liability.services
 
         public async Task<T> AddAsync(TDto dto)
         {
-            var validatorResult = await _validator.ValidateAsync(dto, 
-                o => o.IncludeRuleSets(Constants.AddRuleSetMap[typeof(TDto).Name]));
+            dto = _handler.BeforeHandle(dto);
 
-            if (!validatorResult.IsValid) 
-                throw new ValidationException(validatorResult.Errors);
+            var validatorResult = await _validator.ValidateAsync(dto, o => o.IncludeRuleSets(Constants.AddRuleSetMap[typeof(TDto).Name]));
+
+            if (!validatorResult.IsValid) throw new ValidationException(validatorResult.Errors);
 
             var liability = _mapper.Map<T>(dto);
 
-            return await AddAsync(liability);
-        }
-
-        public async Task<T> AddAsync(T liability)
-        {
+            liability = _handler.Handle(liability);
             liability.UserId = (int)_context.Tenant.UserId;
 
             await _context.Set<T>().AddAsync(liability);
@@ -131,20 +131,16 @@ namespace kamafi.liability.services
             int id,
             TDto dto)
         {
-            var validatorResult = await _validator.ValidateAsync(dto, 
-                o => o.IncludeRuleSets(Constants.UpdateRuleSetMap[typeof(TDto).Name]));
+            var validatorResult = await _validator.ValidateAsync(dto, o => o.IncludeRuleSets(Constants.UpdateRuleSetMap[typeof(TDto).Name]));
 
-            if (!validatorResult.IsValid) 
-                throw new ValidationException(validatorResult.Errors);
+            if (!validatorResult.IsValid) throw new ValidationException(validatorResult.Errors);
 
             var liability = await GetAsync(id, false);
+
+            liability = _handler.HandleUpdate(dto, liability);
             liability = _mapper.Map(dto, liability);
+            liability.UserId = (int)_context.Tenant.UserId;
 
-            return await UpdateAsync(liability);
-        }
-
-        public async Task<T> UpdateAsync(T liability)
-        {
             _context.Set<T>().Update(liability);
             await _context.SaveChangesAsync();
 
