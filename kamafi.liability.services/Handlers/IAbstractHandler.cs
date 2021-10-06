@@ -13,7 +13,7 @@ namespace kamafi.liability.services.handlers
         where TDto : LiabilityDto
     {
         public TDto BeforeHandle(TDto dto);
-        public T Handle(T liability);
+        public T HandleAdd(T liability);
 
         public T HandleUpdate(TDto dto, T liability);
     }

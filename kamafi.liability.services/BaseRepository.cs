@@ -111,7 +111,7 @@ namespace kamafi.liability.services
 
             var liability = _mapper.Map<T>(dto);
 
-            liability = _handler.Handle(liability);
+            liability = _handler.HandleAdd(liability);
             liability.UserId = (int)_context.Tenant.UserId;
 
             await _context.Set<T>().AddAsync(liability);

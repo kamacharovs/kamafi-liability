@@ -13,9 +13,9 @@ namespace kamafi.liability.services.handlers
             return dto;
         }
 
-        protected override Loan OnHandle(Loan liability)
+        protected override Loan OnHandleAdd(Loan liability)
         {
-            return liability.EstimateMonthlyPayment();
+            return liability;
         }
 
         protected override Loan OnHandleUpdate(LoanDto dto, Loan liability)

@@ -17,11 +17,13 @@ namespace kamafi.liability.services.handlers
             return OnBeforeHandle(dto);
         }
 
-        T IAbstractHandler<T, TDto>.Handle(T liability)
+        T IAbstractHandler<T, TDto>.HandleAdd(T liability)
         {
             if (liability is null) throw new ArgumentNullException(nameof(liability));
 
-            return OnHandle(liability);
+            liability.EstimateMonthlyPayment();
+
+            return OnHandleAdd(liability);
         }
 
         T IAbstractHandler<T, TDto>.HandleUpdate(TDto dto, T liability)
@@ -44,7 +46,7 @@ namespace kamafi.liability.services.handlers
         }
 
         protected abstract TDto OnBeforeHandle(TDto dto);
-        protected abstract T OnHandle(T liability);
+        protected abstract T OnHandleAdd(T liability);
         protected abstract T OnHandleUpdate(TDto dto, T liability);
     }
 }
