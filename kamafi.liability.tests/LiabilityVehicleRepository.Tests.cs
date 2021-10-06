@@ -11,7 +11,7 @@ using kamafi.liability.data;
 namespace kamafi.liability.tests
 {
     [Trait(Helper.Category, Helper.UnitTest)]
-    public class LiabilityVehicleRepositoryTests
+    public class LiabilityVehicleRepositoryTests : LiabilityBaseTests<Vehicle, VehicleDto>
     {
         [Theory]
         [MemberData(nameof(Helper.VehicleUserId), MemberType = typeof(Helper))]
@@ -22,19 +22,12 @@ namespace kamafi.liability.tests
 
             var liability = await repo.AddAsync(dto);
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
+            AssertLiability(
+                liability, 
+                userId);
+
             Assert.True(liability.DownPayment > 0);
-            Assert.True(liability.Interest > 0);
             Assert.Equal(dto.DownPayment, liability.DownPayment);
-            Assert.Equal(dto.Interest, liability.Interest);
         }
 
         [Theory]
@@ -60,19 +53,12 @@ namespace kamafi.liability.tests
 
             var liability = await repo.UpdateAsync(id, dto);
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
+            AssertLiability(
+                liability,
+                userId);
+
             Assert.True(liability.DownPayment > 0);
-            Assert.True(liability.Interest > 0);
             Assert.Equal(dto.DownPayment, liability.DownPayment);
-            Assert.Equal(dto.Interest, liability.Interest);
         }
     }
 }

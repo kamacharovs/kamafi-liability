@@ -174,7 +174,7 @@ namespace kamafi.liability.tests
             return FakerLiabilityDto<VehicleDto>()
                 .RuleFor(x => x.TypeName, f => null)
                 .RuleFor(x => x.DownPayment, f => f.Random.Decimal(1000, 4000))
-                .RuleFor(x => x.Interest, f => f.Random.Decimal(0.01M, 10))
+                .RuleFor(x => x.Interest, f => f.Random.Decimal(5.5M, 10))
                 .Generate();
         }
 
@@ -183,7 +183,7 @@ namespace kamafi.liability.tests
             return FakerLiabilityDto<LoanDto>()
                 .RuleFor(x => x.TypeName, f => null)
                 .RuleFor(x => x.LoanType, f => f.Random.String2(5, 10))
-                .RuleFor(x => x.Interest, f => f.Random.Decimal(0.01M, 1.5M))
+                .RuleFor(x => x.Interest, f => f.Random.Decimal(2.325M, 5.5M))
                 .Generate();
         }
 
@@ -195,7 +195,9 @@ namespace kamafi.liability.tests
                 .RuleFor(x => x.TypeName, f => LiabilityTypes.Base)
                 .RuleFor(x => x.Value, f => f.Random.Int(1000, 10000))
                 .RuleFor(x => x.MonthlyPayment, f => f.Random.Decimal(50, 500))
-                .RuleFor(x => x.Years, f => f.Random.Int(1, 5));
+                .RuleFor(x => x.OriginalTerm, f => f.Random.Int(120, 180))
+                .RuleFor(x => x.RemainingTerm, f => f.Random.Int(1, 120))
+                .RuleFor(x => x.Interest, f => f.Random.Decimal(0.01M, 1.5M));
         }
         #endregion
     }

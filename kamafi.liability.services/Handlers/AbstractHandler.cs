@@ -27,6 +27,18 @@ namespace kamafi.liability.services.handlers
         T IAbstractHandler<T, TDto>.HandleUpdate(TDto dto, T liability)
         {
             if (liability is null) throw new ArgumentNullException(nameof(liability));
+            else if (dto is null) throw new ArgumentNullException(nameof(dto));
+
+            // Re-calculate MonthlyPaymentEstimate based on differences
+            if (dto.RemainingTerm.HasValue && dto.RemainingTerm != liability.RemainingTerm
+                || dto.Value.HasValue && dto.Value != liability.Value
+                || dto.Interest.HasValue && dto.Interest != liability.Interest)
+            {
+                liability.MonthlyPaymentEstimate = ExtensionMethods.CalculatePayment(
+                    dto.RemainingTerm.HasValue ? dto.RemainingTerm : liability.RemainingTerm,
+                    dto.Value.HasValue ? (double)dto.Value : (double)liability.Value,
+                    dto.Interest.HasValue ? (double)dto.Interest : (double)liability.Interest);
+            }
 
             return OnHandleUpdate(dto, liability);
         }

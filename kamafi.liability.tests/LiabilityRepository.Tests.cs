@@ -11,7 +11,7 @@ using kamafi.liability.data;
 namespace kamafi.liability.tests
 {
     [Trait(Helper.Category, Helper.UnitTest)]
-    public class LiabilityRepositoryTests
+    public class LiabilityRepositoryTests : LiabilityBaseTests<Liability, LiabilityDto>
     {
         [Theory]
         [MemberData(nameof(Helper.LiabilityUserId), MemberType = typeof(Helper))]
@@ -42,15 +42,9 @@ namespace kamafi.liability.tests
 
             var liability = liabilities.FirstOrDefault();
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
+            AssertLiability(
+                 liability as Liability,
+                 userId);
         }
 
         [Theory]
@@ -60,15 +54,9 @@ namespace kamafi.liability.tests
             var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
             var liability = await repo.GetAsync(id);
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
+            AssertLiability(
+                liability as Liability,
+                userId);
         }
 
         [Theory]
@@ -117,15 +105,9 @@ namespace kamafi.liability.tests
 
             var liability = await repo.AddAsync(dto);
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
+            AssertLiability(
+                liability,
+                userId);
         }
 
         [Theory]
@@ -156,18 +138,10 @@ namespace kamafi.liability.tests
 
             var liability = await repo.UpdateAsync(liabilityInDb.Id, dto);
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
-            Assert.NotEqual(liabilityInDb.Value, liability.Value);
-            Assert.NotEqual(liabilityInDb.Name, liability.Name);
-            Assert.NotEqual(liabilityInDb.MonthlyPayment, liability.MonthlyPayment);
+            AssertUpdateLiability(
+                liability,
+                liabilityInDb as Liability,
+                userId);
         }
 
         [Theory]
@@ -176,6 +150,8 @@ namespace kamafi.liability.tests
         {
             var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
             var dto = new LiabilityDto();
+
+            dto.Value = -1;
 
             await Assert.ThrowsAsync<ValidationException>(() => repo.UpdateAsync(id, dto));
         }

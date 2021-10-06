@@ -15,7 +15,7 @@ namespace kamafi.liability.services.handlers
 
         protected override Vehicle OnHandle(Vehicle liability)
         {
-            return liability;
+            return liability.EstimateMonthlyPayment();
         }
 
         protected override Vehicle OnHandleUpdate(VehicleDto dto, Vehicle liability)

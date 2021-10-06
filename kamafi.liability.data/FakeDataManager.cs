@@ -66,7 +66,12 @@ namespace kamafi.liability.data
                     TypeName = LiabilityTypes.Base,
                     Value = 1599.99M,
                     MonthlyPayment = 199.99M,
-                    Years = 3,
+                    MonthlyPaymentEstimate = 205.11M,
+                    OriginalTerm = 36,
+                    RemainingTerm = 36,
+                    Interest = 3.25M,
+                    AdditionalPayments = null,
+                    Created = DateTime.UtcNow.AddDays(-5),
                     UserId = 1,
                     IsDeleted = false
                 }
@@ -84,11 +89,15 @@ namespace kamafi.liability.data
                     TypeName = LiabilityTypes.Vehicle,
                     Value = 3599.99M,
                     MonthlyPayment = 299.99M,
-                    Years = 5,
+                    MonthlyPaymentEstimate = 275.95M,
+                    OriginalTerm = 60,
+                    RemainingTerm = 60,
+                    Interest = 6.25M,
+                    AdditionalPayments = null,
+                    Created = DateTime.UtcNow.AddDays(-30),
                     UserId = 1,
                     IsDeleted = false,
-                    DownPayment = 489.15M,
-                    Interest = 6.75M
+                    DownPayment = 489.15M
                 }
             };
         }
@@ -104,11 +113,15 @@ namespace kamafi.liability.data
                     TypeName = LiabilityTypes.Loan,
                     Value = 3599.99M,
                     MonthlyPayment = 299.99M,
-                    Years = 5,
+                    MonthlyPaymentEstimate = 378M,
+                    OriginalTerm = 120,
+                    RemainingTerm = 120,
+                    Interest = 10.25M,
+                    AdditionalPayments = null,
+                    Created = DateTime.UtcNow.AddDays(-15),
                     UserId = 1,
                     IsDeleted = false,
-                    LoanType = "Personal",
-                    Interest = 1.25M
+                    LoanType = "Personal"
                 }
             };
         }

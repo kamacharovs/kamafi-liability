@@ -22,11 +22,6 @@ namespace kamafi.liability.data.validators
         {
             RuleFor(x => x.LoanType)
                 .NotEmpty();
-
-            RuleFor(x => x.Interest)
-                .Must(CommonValidator.BeValidPercent)
-                .WithMessage(CommonValidator.PercentValueMessage)
-                .When(x => x.Interest.HasValue);
         }
 
         public void SetUpdateRules()
@@ -34,11 +29,6 @@ namespace kamafi.liability.data.validators
             RuleFor(x => x.LoanType)
                 .Length(100)
                 .When(x => !string.IsNullOrWhiteSpace(x.LoanType));
-
-            RuleFor(x => x.Interest)
-                .Must(CommonValidator.BeValidPercent)
-                .WithMessage(CommonValidator.PercentValueMessage)
-                .When(x => x.Interest.HasValue);
         }
     }
 }

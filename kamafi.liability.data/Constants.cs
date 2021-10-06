@@ -71,4 +71,10 @@ namespace kamafi.liability.data
         public const string Loan = "loan";
         public const string Other = "other";
     }
+
+    public enum TermType
+    {
+        Months,
+        Years
+    }
 }

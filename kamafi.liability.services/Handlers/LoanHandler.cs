@@ -20,17 +20,6 @@ namespace kamafi.liability.services.handlers
 
         protected override Loan OnHandleUpdate(LoanDto dto, Loan liability)
         {
-            // Re-calculate EstimatedMonthlyPayments based on differences
-            if (dto.Years.HasValue && dto.Years != liability.Years
-                || dto.Value.HasValue && dto.Value != liability.Value
-                || dto.Interest.HasValue && dto.Interest != liability.Interest)
-            {
-                liability.EsimatedMonthlyPayment = ExtensionMethods.CalculatePayment(
-                    dto.Years.HasValue ? dto.Years : liability.Years,
-                    dto.Value.HasValue ? (double)dto.Value : (double)liability.Value,
-                    dto.Interest.HasValue ? (double)dto.Interest : (double)liability.Interest);
-            }
-
             return liability;
         }
     }

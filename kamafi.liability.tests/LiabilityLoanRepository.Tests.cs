@@ -11,7 +11,7 @@ using kamafi.liability.data;
 namespace kamafi.liability.tests
 {
     [Trait(Helper.Category, Helper.UnitTest)]
-    public class LiabilityLoanRepositoryTests
+    public class LiabilityLoanRepositoryTests : LiabilityBaseTests<Loan, LoanDto>
     {
         [Theory]
         [MemberData(nameof(Helper.LoanUserId), MemberType = typeof(Helper))]
@@ -22,17 +22,10 @@ namespace kamafi.liability.tests
 
             var liability = await repo.AddAsync(dto);
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
-            Assert.NotNull(liability.LoanType);
-            Assert.True(liability.Interest > 0);
+            AssertLiability(
+                liability, 
+                userId);
+
             Assert.Equal(dto.LoanType, liability.LoanType);
             Assert.Equal(dto.Interest, liability.Interest);
         }
@@ -60,19 +53,14 @@ namespace kamafi.liability.tests
 
             var liability = await repo.UpdateAsync(id, dto);
 
-            Assert.NotNull(liability);
-            Assert.NotNull(liability.Name);
-            Assert.NotNull(liability.Type);
-            Assert.NotNull(liability.TypeName);
-            Assert.True(liability.Value > 0);
-            Assert.True(liability.MonthlyPayment > 0);
-            Assert.True(liability.Years > 0);
-            Assert.Equal(userId, liability.UserId);
-            Assert.False(liability.IsDeleted);
+            AssertLiability(
+                liability,
+                userId);
+
             Assert.NotNull(liability.LoanType);
-            Assert.True(liability.Interest > 0);
             Assert.Equal(dto.LoanType, liability.LoanType);
-            Assert.Equal(dto.Interest, liability.Interest);
+            Assert.True(liability.ShortTerm);
+            Assert.False(liability.LongTerm);
         }
     }
 }

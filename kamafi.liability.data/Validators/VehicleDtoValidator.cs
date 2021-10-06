@@ -22,24 +22,15 @@ namespace kamafi.liability.data.validators
         {
             RuleFor(x => x.DownPayment)
                 .Must(CommonValidator.BeValidValue)
-                .WithMessage(CommonValidator.GenerateValueMessage(nameof(VehicleDto.DownPayment)));
-
-            RuleFor(x => x.Interest)
-                .Must(CommonValidator.BeValidPercent)
-                .WithMessage(CommonValidator.GeneratePercentValueMessage(nameof(VehicleDto.Interest)));
+                .WithValueMessage();
         }
 
         public void SetUpdateRules()
         {
             RuleFor(x => x.DownPayment)
                 .Must(CommonValidator.BeValidValue)
-                .WithMessage(CommonValidator.ValueMessage)
+                .WithValueMessage()
                 .When(x => x.DownPayment.HasValue);
-
-            RuleFor(x => x.Interest)
-                .Must(CommonValidator.BeValidPercent)
-                .WithMessage(CommonValidator.PercentValueMessage)
-                .When(x => x.Interest.HasValue);
         }
     }
 }

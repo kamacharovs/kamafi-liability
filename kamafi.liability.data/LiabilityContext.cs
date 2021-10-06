@@ -49,8 +49,12 @@ namespace kamafi.liability.data
                 e.Property(x => x.Name).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
                 e.Property(x => x.TypeName).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
                 e.Property(x => x.Value).HasSnakeCaseColumnName().IsRequired();
-                e.Property(x => x.MonthlyPayment).HasSnakeCaseColumnName();
-                e.Property(x => x.Years).HasSnakeCaseColumnName();
+                e.Property(x => x.MonthlyPayment).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.MonthlyPaymentEstimate).HasSnakeCaseColumnName();
+                e.Property(x => x.OriginalTerm).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.RemainingTerm).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.Interest).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.AdditionalPayments).HasSnakeCaseColumnName();
                 e.Property(x => x.Created).HasColumnType("timestamp").HasSnakeCaseColumnName().IsRequired();
                 e.Property(x => x.UserId).HasSnakeCaseColumnName().IsRequired();
                 e.Property(x => x.IsDeleted).HasSnakeCaseColumnName().IsRequired();
@@ -66,7 +70,6 @@ namespace kamafi.liability.data
                 e.ToTable(Keys.Entity.Vehicle);
 
                 e.Property(x => x.DownPayment).HasSnakeCaseColumnName().IsRequired();
-                e.Property(x => x.Interest).HasSnakeCaseColumnName().IsRequired();
             });
 
             modelBuilder.Entity<Loan>(e =>
@@ -74,8 +77,6 @@ namespace kamafi.liability.data
                 e.ToTable(Keys.Entity.Loan);
 
                 e.Property(x => x.LoanType).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
-                e.Property(x => x.Interest).HasSnakeCaseColumnName().IsRequired();
-                e.Property(x => x.EsimatedMonthlyPayment).HasSnakeCaseColumnName().IsRequired();
                 e.Property(x => x.ShortTerm).HasSnakeCaseColumnName();
                 e.Property(x => x.LongTerm).HasSnakeCaseColumnName();
             });

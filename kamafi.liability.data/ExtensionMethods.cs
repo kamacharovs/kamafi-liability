@@ -1,39 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 
 namespace kamafi.liability.data
 {
-    public static class ExtensionMethods
+    public static partial class ExtensionMethods
     {
-        public static Loan EstimateMonthlyPayment(this Loan loan)
+        public static T EstimateMonthlyPayment<T>(this T liability)
+            where T : Liability
         {
-            loan.EsimatedMonthlyPayment = CalculatePayment(
-                loan.Years,
-                (double)loan.Value,
-                (double)loan.Interest);
+            liability.MonthlyPaymentEstimate = CalculatePayment(
+                liability.RemainingTerm,
+                (double)liability.Value,
+                (double)liability.Interest);
 
-            return loan;
+            return liability;
         }
 
         public static decimal CalculatePayment(
-            int? years,
+            int? months,
             double value,
             double interest)
         {
-            if (years.HasValue is false)
+            if (months.HasValue is false)
                 throw new core.data.KamafiFriendlyException(HttpStatusCode.BadRequest,
                     $"Loan needs to have Years specified");
 
-            var months = (double)(years * 12);
+            var monthsDouble = (double)months;
             var interestRate = (interest / 100) / 12;
 
             var payment = value *
-                ((interestRate * Math.Pow(1 + interestRate, months)) /
-                (Math.Pow(1 + interestRate, months) - 1));
+                ((interestRate * Math.Pow(1 + interestRate, monthsDouble)) /
+                (Math.Pow(1 + interestRate, monthsDouble) - 1));
 
             return (decimal)(Math.Round(payment, 3));
         }
