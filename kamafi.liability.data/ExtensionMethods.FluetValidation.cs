@@ -11,7 +11,7 @@ namespace kamafi.liability.data
             this IRuleBuilderOptions<T, TProperty> rule)
         {
             return rule.WithMessage("Bad '{PropertyName}'. " 
-                + $"{CommonValidator.ValueMessage}. "
+                + $"Value must be between {CommonValidator.MinimumValue} and {CommonValidator.MaximumValue}. "
                 + "Specified is '{PropertyValue}'.");
         }
 
@@ -19,7 +19,7 @@ namespace kamafi.liability.data
             this IRuleBuilderOptions<T, TProperty> rule)
         {
             return rule.WithMessage("Bad '{PropertyName}'. "
-                + $"{CommonValidator.PercentValueMessage}. "
+                + $"Percent must be between {CommonValidator.MinimumPercentValue} and {CommonValidator.MaximumPercentValue}. "
                 + "Specified is '{PropertyValue}'.");
         }
 
@@ -27,7 +27,7 @@ namespace kamafi.liability.data
             this IRuleBuilderOptions<T, TProperty> rule)
         {
             return rule.WithMessage("Bad '{PropertyName}'. "
-                + $"{CommonValidator.TermValueMessage}. "
+                + $"Term must be between {CommonValidator.MinimumTermValue} and {CommonValidator.MaximumTermValue} months. "
                 + "Specified is '{PropertyValue}'.");
         }
     }

@@ -15,9 +15,6 @@ namespace kamafi.liability.data.validators
         public const int MinimumTermValue = 0;
         public const int MaximumTermValue = 1200;
 
-        public static string ValueMessage = $"Value must be between {MinimumValue} and {MaximumValue}";
-        public static string PercentValueMessage = $"Percent must be between {MinimumPercentValue} and {MaximumPercentValue}";
-        public static string TermValueMessage = $"Term must be between {MinimumTermValue} and {MaximumTermValue}";
         public static string TypeNameMessage = "Unsupported TypeName";
 
         public static bool BeValidValue(decimal? value)
