@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +17,7 @@ namespace kamafi.liability.services
         BaseRepository<Liability, LiabilityDto>,
         ILiabilityRepository
     {
+        [ExcludeFromCodeCoverage]
         public LiabilityRepository(
             ILogger<LiabilityRepository> logger,
             IValidator<LiabilityDto> validator,

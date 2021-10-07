@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Text.Json;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -26,6 +26,7 @@ namespace kamafi.liability.services
         private readonly IAbstractHandler<T, TDto> _handler;
         private readonly LiabilityContext _context;
 
+        [ExcludeFromCodeCoverage]
         public BaseRepository(
             ILogger<BaseRepository<T, TDto>> logger,
             IValidator<TDto> validator,

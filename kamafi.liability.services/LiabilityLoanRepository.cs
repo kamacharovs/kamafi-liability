@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using System.Net;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Extensions.Logging;
 
@@ -16,9 +16,7 @@ namespace kamafi.liability.services
         BaseRepository<Loan, LoanDto>,
         ILoanRepository
     {
-        private readonly IValidator<LoanDto> _validator;
-        private readonly IMapper _mapper;
-
+        [ExcludeFromCodeCoverage]
         public LoanRepository(
             ILogger<LoanRepository> logger,
             IValidator<LoanDto> validator,
@@ -26,10 +24,7 @@ namespace kamafi.liability.services
             IAbstractHandler<Loan, LoanDto> handler,
             LiabilityContext context)
             : base(logger, validator, mapper, handler, context)
-        {
-            _validator = validator ?? throw new ArgumentNullException(nameof(validator));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        }
+        { }
 
         public new async Task<Loan> AddAsync(LoanDto dto)
         {

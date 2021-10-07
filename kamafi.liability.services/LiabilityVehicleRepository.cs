@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +16,7 @@ namespace kamafi.liability.services
         BaseRepository<Vehicle, VehicleDto>,
         IVehicleRepository
     {
+        [ExcludeFromCodeCoverage]
         public VehicleRepository(
             ILogger<VehicleRepository> logger,
             IValidator<VehicleDto> validator,
