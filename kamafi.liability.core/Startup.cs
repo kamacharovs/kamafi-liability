@@ -43,6 +43,9 @@ namespace kamafi.liability.core
                 .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>()
                 .AddSingleton<IValidator<LoanDto>, LoanDtoValidator>();
 
+            ValidatorOptions.Global.CascadeMode = CascadeMode.Continue;
+            ValidatorOptions.Global.DisplayNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
+
             services.AddSingleton<IAbstractHandler<Liability, LiabilityDto>, LiabilityHandler>()
                 .AddSingleton<IAbstractHandler<Loan, LoanDto>, LoanHandler>()
                 .AddSingleton<IAbstractHandler<Vehicle, VehicleDto>, VehicleHandler>();

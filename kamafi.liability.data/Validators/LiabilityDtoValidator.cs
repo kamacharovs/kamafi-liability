@@ -13,8 +13,6 @@ namespace kamafi.liability.data.validators
     {
         public LiabilityDtoValidator()
         {
-            ValidatorOptions.Global.CascadeMode = CascadeMode.Continue;
-
             RuleSet(Constants.AddRuleSet, () => { SetAddBaseRules(); });
             RuleSet(Constants.AddVehicleRuleSet, () => { SetAddBaseRules(); });
             RuleSet(Constants.AddLoanRuleSet, () => { SetAddBaseRules(); });

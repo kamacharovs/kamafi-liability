@@ -12,8 +12,6 @@ namespace kamafi.liability.data.validators
     {
         public LoanDtoValidator()
         {
-            ValidatorOptions.Global.CascadeMode = CascadeMode.Continue;
-
             RuleSet(Constants.AddVehicleRuleSet, () => SetAddRules());
             RuleSet(Constants.UpdateVehicleRuleSet, () => SetUpdateRules());
         }

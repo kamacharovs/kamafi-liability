@@ -12,8 +12,6 @@ namespace kamafi.liability.data.validators
     {
         public VehicleDtoValidator()
         {
-            ValidatorOptions.Global.CascadeMode = CascadeMode.Continue;
-
             RuleSet(Constants.AddVehicleRuleSet, () => SetAddRules());
             RuleSet(Constants.UpdateVehicleRuleSet, () => SetUpdateRules());
         }

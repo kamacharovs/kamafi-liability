@@ -1,38 +1,45 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace kamafi.liability.data
 {
     public static partial class ExtensionMethods
     {
-        public static T EstimateMonthlyPayment<T>(this T liability)
-            where T : Liability
+        public static string ToCamelCase(this string s)
         {
-            liability.MonthlyPaymentEstimate = CalculatePayment(
-                liability.RemainingTerm,
-                (double)liability.Value,
-                (double)liability.Interest);
+            if (string.IsNullOrEmpty(s) || !char.IsUpper(s[0]))
+            {
+                return s;
+            }
 
-            return liability;
+            var chars = s.RemoveWhitespace()
+                .ToCharArray();
+
+            for (var i = 0; i < chars.Length; i++)
+            {
+                if (i == 1 && !char.IsUpper(chars[i]))
+                {
+                    break;
+                }
+
+                var hasNext = (i + 1 < chars.Length);
+                if (i > 0 && hasNext && !char.IsUpper(chars[i + 1]))
+                {
+                    break;
+                }
+
+                chars[i] = char.ToLower(chars[i], CultureInfo.InvariantCulture);
+            }
+
+            return new string(chars);
         }
 
-        public static decimal CalculatePayment(
-            int? months,
-            double value,
-            double interest)
+        public static string RemoveWhitespace(this string s)
         {
-            if (months.HasValue is false)
-                throw new core.data.KamafiFriendlyException(HttpStatusCode.BadRequest,
-                    $"Loan needs to have Years specified");
-
-            var monthsDouble = (double)months;
-            var interestRate = (interest / 100) / 12;
-
-            var payment = value *
-                ((interestRate * Math.Pow(1 + interestRate, monthsDouble)) /
-                (Math.Pow(1 + interestRate, monthsDouble) - 1));
-
-            return (decimal)(Math.Round(payment, 3));
+            return Regex.Replace(s, @"\s+", "");
         }
     }
 }
