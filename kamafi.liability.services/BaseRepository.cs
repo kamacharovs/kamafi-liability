@@ -86,8 +86,10 @@ namespace kamafi.liability.services
             var liabilityTypes = await GetTypesAsync();
 
             if (liabilityTypes.Any(x => string.Equals(x.Name, dto.Name, StringComparison.InvariantCultureIgnoreCase) is true))
+            {
                 throw new core.data.KamafiFriendlyException(HttpStatusCode.BadRequest,
                     $"Liability type already exists. Please try again");
+            }
 
             var liabilityType = _mapper.Map<LiabilityType>(dto);
 

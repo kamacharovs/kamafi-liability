@@ -17,7 +17,7 @@ namespace kamafi.liability.data
                 .ForMember(x => x.Name, o =>
                 {
                     o.PreCondition(s => !string.IsNullOrWhiteSpace(s.Name));
-                    o.MapFrom(s => s.Name.ToSnakeCase().ToLowerInvariant());
+                    o.MapFrom(s => s.Name.ToLowerInvariant());
                 });
 
             /*
