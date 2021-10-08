@@ -25,8 +25,7 @@ namespace kamafi.liability.core
     {
         private readonly IVehicleRepository _repo;
 
-        public VehicleController(
-            IVehicleRepository repo)
+        public VehicleController(IVehicleRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }

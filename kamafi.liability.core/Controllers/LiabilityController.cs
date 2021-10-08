@@ -25,8 +25,7 @@ namespace kamafi.liability.core
     {
         private readonly ILiabilityRepository _repo;
 
-        public LiabilityController(
-            ILiabilityRepository repo)
+        public LiabilityController(ILiabilityRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }
