@@ -12,8 +12,6 @@ namespace kamafi.liability.data.validators
     {
         public VehicleDtoValidator()
         {
-            ValidatorOptions.Global.CascadeMode = CascadeMode.Continue;
-
             RuleSet(Constants.AddVehicleRuleSet, () => SetAddRules());
             RuleSet(Constants.UpdateVehicleRuleSet, () => SetUpdateRules());
         }
@@ -22,15 +20,14 @@ namespace kamafi.liability.data.validators
         {
             RuleFor(x => x.DownPayment)
                 .Must(CommonValidator.BeValidValue)
-                .WithMessage(CommonValidator.ValueMessage)
-                .When(x => x.DownPayment.HasValue);
+                .WithValueMessage();
         }
 
         public void SetUpdateRules()
         {
             RuleFor(x => x.DownPayment)
                 .Must(CommonValidator.BeValidValue)
-                .WithMessage(CommonValidator.ValueMessage)
+                .WithValueMessage()
                 .When(x => x.DownPayment.HasValue);
         }
     }

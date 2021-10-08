@@ -12,11 +12,10 @@ namespace kamafi.liability.data.validators
         public const decimal MaximumValue = 99999999M;
         public const decimal MinimumPercentValue = 0M;
         public const decimal MaximumPercentValue = 100M;
+        public const int MinimumTermValue = 0;
+        public const int MaximumTermValue = 1200;
 
-        public static string ValueMessage = $"Value must be between {MinimumValue} and {MaximumValue}";
-        public static string PercentValueMessage = $"Percent must be between {MinimumPercentValue} and {MaximumPercentValue}";
         public static string TypeNameMessage = "Unsupported TypeName";
-        public static string LiabilityUpdateMessage = $"You must specify at least one field to update. '{nameof(LiabilityDto.Name)}', '{nameof(LiabilityDto.TypeName)}' or '{nameof(LiabilityDto.Value)}'";
 
         public static bool BeValidValue(decimal? value)
         {
@@ -27,10 +26,15 @@ namespace kamafi.liability.data.validators
 
         public static bool BeValidPercent(decimal? value)
         {
-            var valuePerc = Math.Round((decimal)(value * 100), 4);
-
             return value.HasValue
-                ? valuePerc > 0 && valuePerc <= 100
+                ? (decimal)value > 0 && (decimal)value <= 100
+                : false;
+        }
+
+        public static bool BeValidTerm(int? value)
+        {
+            return value.HasValue
+                ? value >= MinimumTermValue && value <= MaximumTermValue
                 : false;
         }
     }

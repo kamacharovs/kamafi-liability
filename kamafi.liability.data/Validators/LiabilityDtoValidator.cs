@@ -13,8 +13,6 @@ namespace kamafi.liability.data.validators
     {
         public LiabilityDtoValidator()
         {
-            ValidatorOptions.Global.CascadeMode = CascadeMode.Continue;
-
             RuleSet(Constants.AddRuleSet, () => { SetAddBaseRules(); });
             RuleSet(Constants.AddVehicleRuleSet, () => { SetAddBaseRules(); });
             RuleSet(Constants.AddLoanRuleSet, () => { SetAddBaseRules(); });
@@ -35,33 +33,32 @@ namespace kamafi.liability.data.validators
 
             RuleFor(x => x.Value)
                 .Must(CommonValidator.BeValidValue)
-                .WithMessage(CommonValidator.ValueMessage)
-                .When(x => x.Value.HasValue);
+                .WithValueMessage();
+
+            RuleFor(x => x.MonthlyPayment)
+                .Must(CommonValidator.BeValidValue)
+                .WithValueMessage();
+
+            RuleFor(x => x.OriginalTerm)
+                .Must(CommonValidator.BeValidTerm)
+                .WithTermMessage();
+
+            RuleFor(x => x.RemainingTerm)
+                .Must(CommonValidator.BeValidTerm)
+                .WithTermMessage();
+
+            RuleFor(x => x.Interest)
+                .Must(CommonValidator.BeValidPercent)
+                .WithPercentMessage();
+
+            RuleFor(x => x.AdditionalPayments)
+                .Must(CommonValidator.BeValidValue)
+                .WithValueMessage()
+                .When(x => x.AdditionalPayments.HasValue);
         }
 
         public void SetUpdateBaseRules()
         {
-            var exemptTypes = new List<string>
-            {
-                nameof(LoanDto),
-                nameof(VehicleDto)
-            };
-
-            RuleFor(x => x)
-                .Must(x =>
-                {
-                    var type = x.GetType().Name;
-
-                    var areAllNull =
-                        x.Name is null
-                        && x.TypeName is null
-                        && !x.Value.HasValue
-                        && !exemptTypes.Contains(type);
-
-                    return !areAllNull;
-                })
-                .WithMessage(CommonValidator.LiabilityUpdateMessage);
-
             RuleFor(x => x.Name)
                 .MaximumLength(100)
                 .When(x => x.Name != null);
@@ -72,8 +69,33 @@ namespace kamafi.liability.data.validators
 
             RuleFor(x => x.Value)
                 .Must(CommonValidator.BeValidValue)
-                .WithMessage(CommonValidator.ValueMessage)
+                .WithValueMessage()
                 .When(x => x.Value.HasValue);
+
+            RuleFor(x => x.MonthlyPayment)
+                .Must(CommonValidator.BeValidValue)
+                .WithValueMessage()
+                .When(x => x.MonthlyPayment.HasValue);
+
+            RuleFor(x => x.OriginalTerm)
+                .Must(CommonValidator.BeValidTerm)
+                .WithTermMessage()
+                .When(x => x.OriginalTerm.HasValue);
+
+            RuleFor(x => x.RemainingTerm)
+                .Must(CommonValidator.BeValidTerm)
+                .WithTermMessage()
+                .When(x => x.RemainingTerm.HasValue);
+
+            RuleFor(x => x.Interest)
+                .Must(CommonValidator.BeValidPercent)
+                .WithPercentMessage()
+                .When(x => x.Interest.HasValue);
+
+            RuleFor(x => x.AdditionalPayments)
+                .Must(CommonValidator.BeValidValue)
+                .WithValueMessage()
+                .When(x => x.AdditionalPayments.HasValue);
         }
     }
 }

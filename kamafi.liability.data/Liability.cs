@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,8 +13,12 @@ namespace kamafi.liability.data
         public string TypeName { get; set; }
         public LiabilityType Type { get; set; }
         public decimal Value { get; set; }
-        public decimal? MonthlyPayment { get; set; }
-        public int? Years { get; set; }
+        public decimal MonthlyPayment { get; set; } = 0;
+        public decimal? MonthlyPaymentEstimate { get; set; }
+        public int OriginalTerm { get; set; }
+        public int RemainingTerm { get; set; }
+        public decimal Interest { get; set; }
+        public decimal? AdditionalPayments { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public int UserId { get; set; }
         public bool IsDeleted { get; set; } = false;
@@ -29,6 +34,9 @@ namespace kamafi.liability.data
 
         public decimal? Value { get; set; }
         public decimal? MonthlyPayment { get; set; }
-        public int? Years { get; set; }
+        public int? OriginalTerm { get; set; }
+        public int? RemainingTerm { get; set; }
+        public decimal? Interest { get; set; }
+        public decimal? AdditionalPayments { get; set; }
     }
 }

@@ -14,8 +14,6 @@ namespace kamafi.liability.data.validators
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
-            ValidatorOptions.Global.CascadeMode = CascadeMode.Stop;
-
             RuleSet(Constants.AddRuleSet, () => { SetTypeRules(); });
             RuleSet(Constants.AddVehicleRuleSet, () => { SetTypeRules(); });
             RuleSet(Constants.AddLoanRuleSet, () => { SetTypeRules(); });

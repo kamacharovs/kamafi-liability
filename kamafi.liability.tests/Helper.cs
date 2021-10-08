@@ -21,6 +21,7 @@ using kamafi.core.data;
 using kamafi.liability.data;
 using kamafi.liability.data.validators;
 using kamafi.liability.services;
+using kamafi.liability.services.handlers;
 
 namespace kamafi.liability.tests
 {
@@ -53,6 +54,10 @@ namespace kamafi.liability.tests
             services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
                 .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>()
                 .AddSingleton<IValidator<LoanDto>, LoanDtoValidator>();
+
+            services.AddSingleton<IAbstractHandler<Liability, LiabilityDto>, LiabilityHandler>()
+                .AddSingleton<IAbstractHandler<Loan, LoanDto>, LoanHandler>()
+                .AddSingleton<IAbstractHandler<Vehicle, VehicleDto>, VehicleHandler>();
 
             services.AddScoped(x => GetMockTenant());
             services.AddSingleton(new MapperConfiguration(x =>
@@ -108,6 +113,11 @@ namespace kamafi.liability.tests
             => new ServiceHelper().GetRequiredService<FakeDataManager>() ?? throw new ArgumentNullException(nameof(FakeDataManager));
 
 
+        public static IEnumerable<object[]> LiabilityType()
+        {
+            return _Fake.GetFakeLiabilityTypeData();
+        }
+
         public static IEnumerable<object[]> LiabilityIdUserId()
         {
             return _Fake.GetFakeLiabilityData(
@@ -119,6 +129,75 @@ namespace kamafi.liability.tests
         {
             return _Fake.GetFakeLiabilityData(
                 userId: true);
+        }
+
+        public static IEnumerable<object[]> VehicleIdUserId()
+        {
+            return _Fake.GetFakeVehicleData(
+                id: true,
+                userId: true);
+        }
+
+        public static IEnumerable<object[]> VehicleUserId()
+        {
+            return _Fake.GetFakeVehicleData(
+                userId: true);
+        }
+
+        public static IEnumerable<object[]> LoanIdUserId()
+        {
+            return _Fake.GetFakeLoanData(
+                id: true,
+                userId: true);
+        }
+
+        public static IEnumerable<object[]> LoanUserId()
+        {
+            return _Fake.GetFakeLoanData(
+                userId: true);
+        }
+
+        public static LiabilityTypeDto RandomLiabilityTypeDto()
+        {
+            return new Faker<LiabilityTypeDto>()
+                .RuleFor(x => x.Name, f => f.Random.String2(10))
+                .Generate();
+        }
+
+        public static LiabilityDto RandomLiabilityDto()
+        {
+            return FakerLiabilityDto<LiabilityDto>().Generate();
+        }
+
+        public static VehicleDto RandomVehicleDto()
+        {
+            return FakerLiabilityDto<VehicleDto>()
+                .RuleFor(x => x.TypeName, f => null)
+                .RuleFor(x => x.DownPayment, f => f.Random.Decimal(1000, 4000))
+                .RuleFor(x => x.Interest, f => f.Random.Decimal(5.5M, 10))
+                .Generate();
+        }
+
+        public static LoanDto RandomLoanDto()
+        {
+            return FakerLiabilityDto<LoanDto>()
+                .RuleFor(x => x.TypeName, f => null)
+                .RuleFor(x => x.LoanType, f => f.Random.String2(5, 10))
+                .RuleFor(x => x.Interest, f => f.Random.Decimal(2.325M, 5.5M))
+                .Generate();
+        }
+
+        private static Faker<TDto> FakerLiabilityDto<TDto>()
+            where TDto : LiabilityDto
+        {
+            return new Faker<TDto>()
+                .RuleFor(x => x.Name, f => f.Random.String2(10))
+                .RuleFor(x => x.TypeName, f => LiabilityTypes.Base)
+                .RuleFor(x => x.Value, f => f.Random.Int(1000, 10000))
+                .RuleFor(x => x.MonthlyPayment, f => f.Random.Decimal(50, 500))
+                .RuleFor(x => x.OriginalTerm, f => f.Random.Int(120, 180))
+                .RuleFor(x => x.RemainingTerm, f => f.Random.Int(1, 120))
+                .RuleFor(x => x.Interest, f => f.Random.Decimal(0.01M, 1.5M));
         }
         #endregion
     }
