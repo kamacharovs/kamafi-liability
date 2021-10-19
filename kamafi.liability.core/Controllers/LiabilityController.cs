@@ -59,7 +59,7 @@ namespace kamafi.liability.core
         [Route("types")]
         [ProducesResponseType(typeof(kamafi.core.data.IKamafiProblemDetail), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ILiabilityType), StatusCodes.Status201Created)]
-        public async Task<IActionResult> AddAsync([FromBody, Required] LiabilityTypeDto dto)
+        public async Task<IActionResult> AddTypesAsync([FromBody, Required] LiabilityTypeDto dto)
         {
             return Created(nameof(LiabilityType), await _repo.AddAsync(dto));
         }

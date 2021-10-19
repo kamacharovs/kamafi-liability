@@ -103,7 +103,7 @@ namespace kamafi.liability.tests
             var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
             var dto = Helper.RandomLiabilityDto();
 
-            var liability = await repo.AddAsync(dto);
+            var liability = await repo.AddAsync(dto) as Liability;
 
             AssertLiability(
                 liability,
@@ -136,7 +136,7 @@ namespace kamafi.liability.tests
 
             Assert.NotNull(liabilityInDb);
 
-            var liability = await repo.UpdateAsync(liabilityInDb.Id, dto);
+            var liability = await repo.UpdateAsync(liabilityInDb.Id, dto) as Liability;
 
             AssertUpdateLiability(
                 liability,
