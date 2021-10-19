@@ -33,6 +33,10 @@ namespace kamafi.liability.data
 
                 e.Property(x => x.Name).HasSnakeCaseColumnName().HasMaxLength(100).IsRequired();
                 e.Property(x => x.PublicKey).HasSnakeCaseColumnName().IsRequired();
+                e.Property(x => x.Description).HasSnakeCaseColumnName().HasMaxLength(500);
+                e.Property(x => x.DefaultInterest).HasSnakeCaseColumnName();
+                e.Property(x => x.DefaultOriginalTerm).HasSnakeCaseColumnName();
+                e.Property(x => x.DefaultRemainingTerm).HasSnakeCaseColumnName();
             });
 
             modelBuilder.Entity<Liability>(e =>
