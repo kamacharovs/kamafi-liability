@@ -28,6 +28,28 @@ namespace kamafi.liability.tests
             Assert.NotNull(liabilityType);
             Assert.NotNull(liabilityType.Name);
             Assert.NotEqual(Guid.Empty, liabilityType.PublicKey);
+
+            var nullDefaults = new string[]
+            {
+                LiabilityTypes.Base,
+                LiabilityTypes.Other
+            };
+
+            if (!nullDefaults.Contains(liabilityType.Name))
+            {
+                Assert.NotNull(liabilityType.DefaultInterest);
+                Assert.True(liabilityType.DefaultInterest > 0);
+                Assert.NotNull(liabilityType.DefaultOriginalTerm);
+                Assert.True(liabilityType.DefaultOriginalTerm > 0);
+                Assert.NotNull(liabilityType.DefaultRemainingTerm);
+                Assert.True(liabilityType.DefaultRemainingTerm > 0);
+            }
+            else
+            {
+                Assert.Null(liabilityType.DefaultInterest);
+                Assert.Null(liabilityType.DefaultOriginalTerm);
+                Assert.Null(liabilityType.DefaultRemainingTerm);
+            }
         }
 
         [Theory]

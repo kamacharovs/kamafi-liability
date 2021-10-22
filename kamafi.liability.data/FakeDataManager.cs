@@ -63,7 +63,7 @@ namespace kamafi.liability.data
                 new LiabilityType
                 {
                     Name = LiabilityTypes.Other,
-                    Description = LiabilityTypes.Base,
+                    Description = LiabilityTypes.Other,
                     DefaultInterest = null,
                     DefaultOriginalTerm = null,
                     DefaultRemainingTerm = null
