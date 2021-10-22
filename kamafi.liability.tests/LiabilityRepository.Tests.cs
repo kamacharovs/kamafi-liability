@@ -28,6 +28,29 @@ namespace kamafi.liability.tests
             Assert.NotNull(liabilityType);
             Assert.NotNull(liabilityType.Name);
             Assert.NotEqual(Guid.Empty, liabilityType.PublicKey);
+            Assert.NotNull(liabilityType.Description);
+
+            var nullDefaults = new string[]
+            {
+                LiabilityTypes.Base,
+                LiabilityTypes.Other
+            };
+
+            if (!nullDefaults.Contains(liabilityType.Name))
+            {
+                Assert.NotNull(liabilityType.DefaultInterest);
+                Assert.True(liabilityType.DefaultInterest > 0);
+                Assert.NotNull(liabilityType.DefaultOriginalTerm);
+                Assert.True(liabilityType.DefaultOriginalTerm > 0);
+                Assert.NotNull(liabilityType.DefaultRemainingTerm);
+                Assert.True(liabilityType.DefaultRemainingTerm > 0);
+            }
+            else
+            {
+                Assert.Null(liabilityType.DefaultInterest);
+                Assert.Null(liabilityType.DefaultOriginalTerm);
+                Assert.Null(liabilityType.DefaultRemainingTerm);
+            }
         }
 
         [Theory]
@@ -80,6 +103,19 @@ namespace kamafi.liability.tests
             Assert.NotNull(liabilityType);
             Assert.NotNull(liabilityType.Name);
             Assert.NotEqual(Guid.Empty, liabilityType.PublicKey);
+            Assert.NotNull(liabilityType.Description);
+            Assert.NotNull(liabilityType.DefaultInterest);
+            Assert.True(liabilityType.DefaultInterest > 0);
+            Assert.NotNull(liabilityType.DefaultOriginalTerm);
+            Assert.True(liabilityType.DefaultOriginalTerm > 0);
+            Assert.NotNull(liabilityType.DefaultRemainingTerm);
+            Assert.True(liabilityType.DefaultRemainingTerm > 0);
+
+            Assert.Equal(dto.Name, liabilityType.Name);
+            Assert.Equal(dto.Description, liabilityType.Description);
+            Assert.Equal(dto.DefaultInterest, liabilityType.DefaultInterest);
+            Assert.Equal(dto.DefaultOriginalTerm, liabilityType.DefaultOriginalTerm);
+            Assert.Equal(dto.DefaultRemainingTerm, liabilityType.DefaultRemainingTerm);
         }
 
         [Theory]
@@ -103,7 +139,7 @@ namespace kamafi.liability.tests
             var repo = new ServiceHelper() { UserId = userId }.GetRequiredService<ILiabilityRepository>();
             var dto = Helper.RandomLiabilityDto();
 
-            var liability = await repo.AddAsync(dto);
+            var liability = await repo.AddAsync(dto) as Liability;
 
             AssertLiability(
                 liability,
@@ -136,7 +172,7 @@ namespace kamafi.liability.tests
 
             Assert.NotNull(liabilityInDb);
 
-            var liability = await repo.UpdateAsync(liabilityInDb.Id, dto);
+            var liability = await repo.UpdateAsync(liabilityInDb.Id, dto) as Liability;
 
             AssertUpdateLiability(
                 liability,

@@ -81,27 +81,6 @@ namespace kamafi.liability.services
                 ?? throw new core.data.KamafiNotFoundException($"Liability with Id={id} was not found");
         }
 
-        public async Task<ILiabilityType> AddAsync(LiabilityTypeDto dto)
-        {
-            var liabilityTypes = await GetTypesAsync();
-
-            if (liabilityTypes.Any(x => string.Equals(x.Name, dto.Name, StringComparison.InvariantCultureIgnoreCase) is true))
-                throw new core.data.KamafiFriendlyException(HttpStatusCode.BadRequest,
-                    $"Liability type already exists. Please try again");
-
-            var liabilityType = _mapper.Map<LiabilityType>(dto);
-
-            await _context.LiabilityTypes.AddAsync(liabilityType);
-            await _context.SaveChangesAsync();
-
-            _logger.LogInformation("{Tenant} | Created LiabilityType with Name={LiabilityTypeName} and PublicKey={LiabilityTypePublicKey}",
-                _context.Tenant.Log,
-                liabilityType.Name,
-                liabilityType.PublicKey);
-
-            return liabilityType;
-        }
-
         public async Task<T> AddAsync(TDto dto)
         {
             dto = _handler.BeforeHandle(dto);

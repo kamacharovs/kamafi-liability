@@ -25,8 +25,7 @@ namespace kamafi.liability.core
     {
         private readonly ILoanRepository _repo;
 
-        public LoanController(
-            ILoanRepository repo)
+        public LoanController(ILoanRepository repo)
         {
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
         }

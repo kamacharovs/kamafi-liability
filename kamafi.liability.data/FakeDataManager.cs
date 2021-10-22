@@ -38,19 +38,35 @@ namespace kamafi.liability.data
             {
                 new LiabilityType
                 {
-                    Name = LiabilityTypes.Base
+                    Name = LiabilityTypes.Base,
+                    Description = LiabilityTypes.Base,
+                    DefaultInterest = null,
+                    DefaultOriginalTerm = null,
+                    DefaultRemainingTerm = null
                 },
                 new LiabilityType
                 {
-                    Name = LiabilityTypes.Vehicle
+                    Name = LiabilityTypes.Vehicle,
+                    Description = LiabilityTypes.Vehicle,
+                    DefaultInterest = 6.25M,
+                    DefaultOriginalTerm = 60,
+                    DefaultRemainingTerm = 60
                 },
                 new LiabilityType
                 {
-                    Name = LiabilityTypes.Loan
+                    Name = LiabilityTypes.Loan,
+                    Description = LiabilityTypes.Loan,
+                    DefaultInterest = 3,
+                    DefaultOriginalTerm = 60,
+                    DefaultRemainingTerm = 60
                 },
                 new LiabilityType
                 {
-                    Name = LiabilityTypes.Other
+                    Name = LiabilityTypes.Other,
+                    Description = LiabilityTypes.Other,
+                    DefaultInterest = null,
+                    DefaultOriginalTerm = null,
+                    DefaultRemainingTerm = null
                 }
             };
         }

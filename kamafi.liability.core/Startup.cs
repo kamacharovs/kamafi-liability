@@ -39,7 +39,8 @@ namespace kamafi.liability.core
                 .AddScoped<ILoanRepository, LoanRepository>()
                 .AddAutoMapper(typeof(LiabilityProfile).Assembly);
 
-            services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
+            services.AddSingleton<IValidator<LiabilityTypeDto>, LiabilityTypeDtoValidator>()
+                .AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
                 .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>()
                 .AddSingleton<IValidator<LoanDto>, LoanDtoValidator>();
 

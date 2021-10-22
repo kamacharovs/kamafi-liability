@@ -51,7 +51,8 @@ namespace kamafi.liability.tests
                 .AddScoped<ILoanRepository, LoanRepository>()
                 .AddScoped<FakeDataManager>();
 
-            services.AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
+            services.AddSingleton<IValidator<LiabilityTypeDto>, LiabilityTypeDtoValidator>()
+                .AddSingleton<IValidator<LiabilityDto>, LiabilityDtoValidator<LiabilityDto>>()
                 .AddSingleton<IValidator<VehicleDto>, VehicleDtoValidator>()
                 .AddSingleton<IValidator<LoanDto>, LoanDtoValidator>();
 
@@ -161,6 +162,10 @@ namespace kamafi.liability.tests
         {
             return new Faker<LiabilityTypeDto>()
                 .RuleFor(x => x.Name, f => f.Random.String2(10))
+                .RuleFor(x => x.Description, f => f.Random.String2(100, 300))
+                .RuleFor(x => x.DefaultInterest, f => f.Random.Decimal(0.01M, 10))
+                .RuleFor(x => x.DefaultOriginalTerm, f => f.Random.Int(60, 360))
+                .RuleFor(x => x.DefaultRemainingTerm, f => f.Random.Int(12, 60))
                 .Generate();
         }
 

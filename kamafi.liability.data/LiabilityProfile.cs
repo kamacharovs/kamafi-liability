@@ -17,8 +17,12 @@ namespace kamafi.liability.data
                 .ForMember(x => x.Name, o =>
                 {
                     o.PreCondition(s => !string.IsNullOrWhiteSpace(s.Name));
-                    o.MapFrom(s => s.Name.ToSnakeCase().ToLowerInvariant());
-                });
+                    o.MapFrom(s => s.Name.ToLowerInvariant());
+                })
+                .ForMember(x => x.Description, o => o.Condition(s => !string.IsNullOrWhiteSpace(s.Description)))
+                .ForMember(x => x.DefaultInterest, o => o.Condition(s => s.DefaultInterest.HasValue))
+                .ForMember(x => x.DefaultOriginalTerm, o => o.Condition(s => s.DefaultOriginalTerm.HasValue))
+                .ForMember(x => x.DefaultRemainingTerm, o => o.Condition(s => s.DefaultRemainingTerm.HasValue));
 
             /*
              * Liability

@@ -10,6 +10,12 @@ The recommended way is to use `docker-compose`. That pulls down all the Docker i
 
 ### Docker
 
+(Optional) Build the project
+
+```pw
+dotnet build -c Release
+```
+
 First we need to run `dotnet publish`
 
 ```pw
@@ -22,7 +28,7 @@ Then we build the `Dockerfile`
 docker build -t gkama/kamafi-liability:dev -f Dockerfile .
 ```
 
-(Optiona) Run the image
+(Optional) Run the image
 
 ```pw
 docker run -it -e ASPNETCORE_ENVIRONMENT='Development' --rm -p 8000:80 gkama/kamafi-liability:dev
