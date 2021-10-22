@@ -60,8 +60,7 @@ namespace kamafi.liability.services
             await _typeDtoValidator.ValidateAndThrowAsync(dto);
 
             var liabilityTypes = await GetTypesAsync();
-            if (liabilityTypes.Any(x => string.Equals(x.Name, dto.Name, 
-                StringComparison.InvariantCultureIgnoreCase) is true))
+            if (liabilityTypes.Any(x => string.Equals(x.Name, dto.Name, StringComparison.InvariantCultureIgnoreCase) is true))
             {
                 throw new core.data.KamafiFriendlyException(HttpStatusCode.BadRequest,
                     $"Liability type already exists. Please try again");

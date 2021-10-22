@@ -9,18 +9,12 @@ namespace kamafi.liability.data.validators
 {
     public class LiabilityTypeDtoValidator : AbstractValidator<LiabilityTypeDto>
     {
-        public LiabilityTypeDtoValidator(LiabilityContext context)
+        public LiabilityTypeDtoValidator()
         {
-            RuleSet(Constants.AddRuleSet, () => { SetTypeRules(); });
-            RuleSet(Constants.AddVehicleRuleSet, () => { SetTypeRules(); });
-            RuleSet(Constants.AddLoanRuleSet, () => { SetTypeRules(); });
-
-            RuleSet(Constants.UpdateRuleSet, () => { SetTypeRules(); });
-            RuleSet(Constants.UpdateVehicleRuleSet, () => { SetTypeRules(); });
-            RuleSet(Constants.UpdateLoanRuleSet, () => { SetTypeRules(); });
+            SetRules();
         }
 
-        public void SetTypeRules()
+        public void SetRules()
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
@@ -28,7 +22,8 @@ namespace kamafi.liability.data.validators
 
             RuleFor(x => x.Description)
                 .NotEmpty()
-                .MaximumLength(500);
+                .MaximumLength(500)
+                .When(x => x.Description != null);
 
             RuleFor(x => x.DefaultInterest)
                 .Must(CommonValidator.BeValidPercent)
